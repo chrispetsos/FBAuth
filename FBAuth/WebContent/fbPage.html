@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>FBAuth Facebook page Example</title>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.7.2.min.js"></script>
+</head>
+<body>
+	<script>
+		var accessToken;
+		
+		$(document).ready(function () { 
+			accessToken = window.location.hash.substr(1);
+			$('#token').val(accessToken);
+		});
+		
+		// This will invoke the FBAuth API
+		function testFBAuthAPI() {
+			console.log('Invoking FBAuth API.... ');
+			jQuery.ajax({
+			    url: "/fb/rest/api/hello",
+			    type: "GET",
+			    headers: { 'Authorization': 'Bearer ' + accessToken},
+			
+			    contentType: 'text/plain; charset=utf-8',
+			    success: function(resultData) {
+			    	console.log(resultData);
+			    	$("div#status").html(resultData);
+			    },
+			    error : function(jqXHR, textStatus, errorThrown) {
+			    },
+			
+			    timeout: 120000,
+			});
+		}	
+	</script>
+
+	<button onclick="testFBAuthAPI()">Invoke FBAuth API</button>
+	<div id="status"></div>
+	<form method="get" action="auth/web/logout">
+		<input type="hidden" name="token" value="" id="token"/> 
+		<input type="hidden" name="loginURL" value="/../../../login.html" /> 
+	    <button type="submit">Logout</button>
+	</form>
+</body>
+</html>
